@@ -243,7 +243,7 @@ const Navigation = React.createClass({
             <LinkContainer to={Routes.SYSTEM.NODES.LIST}>
               <InactiveNavItem><GlobalThroughput /></InactiveNavItem>
             </LinkContainer>
-            <HelpMenu active={this._isActive(Routes.GETTING_STARTED)} />
+            {/* <HelpMenu active={this._isActive(Routes.GETTING_STARTED)}/>*/}
             <UserMenu fullName={this.props.fullName} loginName={this.props.loginName} />
             {AppConfig.gl2DevMode() ?
               <NavItem className="notification-badge-link">

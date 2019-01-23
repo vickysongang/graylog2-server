@@ -2,7 +2,8 @@
 <html<% if(htmlWebpackPlugin.files.manifest) { %> manifest="<%= htmlWebpackPlugin.files.manifest %>"<% } %>>
   <head>
     <meta charset="UTF-8">
-    <title><%=htmlWebpackPlugin.options.title || 'Webpack App'%></title>
+   <!-- <title><%=htmlWebpackPlugin.options.title || 'Webpack App'%></title>-->
+    <title>Onstar BAM</title>
     <% if (htmlWebpackPlugin.files.favicon) { %>
     <link rel="shortcut icon" href="<%=htmlWebpackPlugin.files.favicon%>">
     <% } %>

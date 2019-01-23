@@ -32,7 +32,7 @@ import static java.util.Objects.requireNonNull;
 
 @Singleton
 public class IndexHtmlGenerator {
-    private static final String title = "Graylog Web Interface";
+    private static final String title = "BAM Web Interface";
     private final String content;
 
     @Inject

@@ -101,6 +101,38 @@ const MessageTableEntry = React.createClass({
   _toggleDetail() {
     this.props.toggleDetail(`${this.props.message.index}-${this.props.message.id}`);
   },
+
+  _isAdded(key) {
+    const decorationStats = this.props.message.decoration_stats;
+    return decorationStats && decorationStats.added_fields && decorationStats.added_fields[key] !== undefined;
+  },
+  _isChanged(key) {
+    const decorationStats = this.props.message.decoration_stats;
+    return decorationStats && decorationStats.changed_fields && decorationStats.changed_fields[key] !== undefined;
+  },
+  _isDecorated(key) {
+    return this._isAdded(key) || this._isChanged(key);
+  },
+
+  renderForDisplay(fieldName, truncate) {
+    const fullOrigValue = this.props.message.fields[fieldName];
+    const isDecorated = this._isDecorated(fieldName);
+
+    if (isDecorated && (typeof fullOrigValue === 'object') && (fullOrigValue.type === 'a')) {
+      const link = fullOrigValue.href;
+      const text = fullOrigValue.text;
+      return React.createElement('a', { href: link, target: '_blank' }, text || link);
+    }
+
+    if (fullOrigValue === undefined) {
+      return '';
+    }
+
+    /* Timestamp can not be highlighted by elastic search. So we can safely
+     * skip them from highlighting. */
+    return this.possiblyHighlight(fieldName, fullOrigValue, truncate);
+  },
+
   render() {
     const colSpanFixup = this.props.selectedFields.size + 1;
 
@@ -113,35 +145,35 @@ const MessageTableEntry = React.createClass({
     }
     return (
       <tbody className={classes}>
-        <tr className="fields-row" onClick={this._toggleDetail}>
-          <td><strong>
-            <Timestamp dateTime={this.props.message.fields.timestamp} />
-          </strong></td>
-          { this.props.selectedFields.toSeq().map(selectedFieldName => <td
+      <tr className="fields-row" onClick={this._toggleDetail}>
+        <td><strong>
+          <Timestamp dateTime={this.props.message.fields.timestamp} />
+        </strong></td>
+        { this.props.selectedFields.toSeq().map(selectedFieldName => <td
           key={selectedFieldName}>{this.possiblyHighlight(selectedFieldName, true)}</td>) }
-        </tr>
+      </tr>
 
-        {this.props.showMessageRow &&
-        <tr className="message-row" onClick={this._toggleDetail}>
-          <td colSpan={colSpanFixup}><div className="message-wrapper">{this.possiblyHighlight('message', true)}</div></td>
-        </tr>
-        }
-        {this.props.expanded &&
-        <tr className="message-detail-row" style={{ display: 'table-row' }}>
-          <td colSpan={colSpanFixup}>
-            <MessageDetail message={this.props.message}
-                           inputs={this.props.inputs}
-                           streams={this.props.streams}
-                           allStreams={this.props.allStreams}
-                           allStreamsLoaded={this.props.allStreamsLoaded}
-                           nodes={this.props.nodes}
-                           possiblyHighlight={this.possiblyHighlight}
-                           disableSurroundingSearch={this.props.disableSurroundingSearch}
-                           expandAllRenderAsync={this.props.expandAllRenderAsync}
-                           searchConfig={this.props.searchConfig}/>
-          </td>
-        </tr>
-        }
+      {this.props.showMessageRow &&
+      <tr className="message-row" onClick={this._toggleDetail}>
+        <td colSpan={colSpanFixup}><div className="message-wrapper">{this.possiblyHighlight('message', true)}</div></td>
+      </tr>
+      }
+      {this.props.expanded &&
+      <tr className="message-detail-row" style={{ display: 'table-row' }}>
+        <td colSpan={colSpanFixup}>
+          <MessageDetail message={this.props.message}
+                         inputs={this.props.inputs}
+                         streams={this.props.streams}
+                         allStreams={this.props.allStreams}
+                         allStreamsLoaded={this.props.allStreamsLoaded}
+                         nodes={this.props.nodes}
+                         renderForDisplay={this.renderForDisplay}
+                         disableSurroundingSearch={this.props.disableSurroundingSearch}
+                         expandAllRenderAsync={this.props.expandAllRenderAsync}
+                         searchConfig={this.props.searchConfig}/>
+        </td>
+      </tr>
+      }
       </tbody>
     );
   },
