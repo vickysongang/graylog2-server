@@ -30,7 +30,7 @@ const NewAlertConditionPage = createReactClass({
         <div>
           <PageHeader title="New alert condition">
             <span>
-              Define an alert condition and configure the way Graylog will notify you when that condition is satisfied.
+              Define an alert condition and configure the way BAM will notify you when that condition is satisfied.
             </span>
 
             <span>

@@ -64,7 +64,7 @@ const IndexerFailuresComponent = React.createClass({
 
           <SmallSupportLink>
             Every message that was not successfully indexed will be logged as an indexer failure. You can learn more about this feature in the{' '}
-            <DocumentationLink page={DocsHelper.PAGES.INDEXER_FAILURES} text="Graylog documentation" />.
+            <DocumentationLink page={DocsHelper.PAGES.INDEXER_FAILURES} text="documentation" />.
           </SmallSupportLink>
 
           {content}
